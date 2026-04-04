@@ -1,0 +1,102 @@
+---
+contents:
+  repositories:
+    - http://dl-cdn.alpinelinux.org/alpine/v3.23/main
+    - http://dl-cdn.alpinelinux.org/alpine/v3.23/community
+  packages:
+    # This one metapackage provides busybox, apk, musl-utils, and OpenRC among others
+    - alpine-base
+    # Kernel and null firmware package
+    - linux-firmware-none
+    - linux-virt
+    # Workload packages
+    - nyancat
+# This is where we configure which services that OpenRC will
+# start, and which runlevels they will be started at
+paths:
+  # Services: sysinit
+  - path: /etc/runlevels/sysinit/devfs
+    type: symlink
+    source: /etc/init.d/devfs
+    permissions: 0o755  # extremely important otherwise apko clobbers the permissions of the dest file
+  - path: /etc/runlevels/sysinit/dmesg
+    type: symlink
+    source: /etc/init.d/dmesg
+    permissions: 0o755
+  - path: /etc/runlevels/sysinit/mdev
+    type: symlink
+    source: /etc/init.d/mdev
+    permissions: 0o755
+  - path: /etc/runlevels/sysinit/hwdrivers
+    type: symlink
+    source: /etc/init.d/hwdrivers
+    permissions: 0o755
+  # Services: boot
+  - path: /etc/runlevels/boot/bootmisc
+    type: symlink
+    source: /etc/init.d/bootmisc
+    permissions: 0o755
+  - path: /etc/runlevels/boot/hostname
+    type: symlink
+    source: /etc/init.d/hostname
+    permissions: 0o755
+  - path: /etc/runlevels/boot/hwclock
+    type: symlink
+    source: /etc/init.d/hwclock
+    permissions: 0o755
+  - path: /etc/runlevels/boot/klogd
+    type: symlink
+    source: /etc/init.d/klogd
+    permissions: 0o755
+  - path: /etc/runlevels/boot/modules
+    type: symlink
+    source: /etc/init.d/modules
+    permissions: 0o755
+  - path: /etc/runlevels/boot/networking
+    type: symlink
+    source: /etc/init.d/networking
+    permissions: 0o755
+  - path: /etc/runlevels/boot/sysctl
+    type: symlink
+    source: /etc/init.d/sysctl
+    permissions: 0o755
+  - path: /etc/runlevels/boot/syslog
+    type: symlink
+    source: /etc/init.d/syslog
+    permissions: 0o755
+  # Services: shutdown
+  - path: /etc/runlevels/shutdown/killprocs
+    type: symlink
+    source: /etc/init.d/killprocs
+    permissions: 0o755
+  - path: /etc/runlevels/shutdown/mount-ro
+    type: symlink
+    source: /etc/init.d/mount-ro
+    permissions: 0o755
+  # Services: default
+  - path: /etc/runlevels/default/acpid
+    type: symlink
+    source: /etc/init.d/acpid
+    permissions: 0o755
+  - path: /etc/runlevels/default/crond
+    type: symlink
+    source: /etc/init.d/crond
+    permissions: 0o755
+  - path: /etc/runlevels/default/local
+    type: symlink
+    source: /etc/init.d/local
+    permissions: 0o755
+# This is where we configure accounts for services
+# that need to have accounts present, as apko does
+# not create them when installing packages
+accounts:
+  groups:  # copied from /etc/group
+    - groupname: klogd
+      gid: 500
+  users:  # copied from /etc/passwd
+    - username: klogd
+      uid: 500
+      shell: /sbin/nologin
+archs:
+  - amd64
+...
