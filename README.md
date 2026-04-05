@@ -25,7 +25,12 @@ Build with lockfile as an input:
 just image
 ```
 
-Test in QEMU
+Test in QEMU (full UEFI VM):
 ```sh
-just test
+just qemu
+```
+
+Test in QEMU (microVM):
+```sh
+just microvm
 ```
