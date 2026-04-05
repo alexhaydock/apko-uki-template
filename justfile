@@ -1,12 +1,36 @@
 set ignore-comments
 
 build:
+    just config
     just lock
     just image
 
 lock:
     # Create lockfile based on image config
-    apko lock --output apko.lock manifest.yaml
+    apko lock --output apko.lock image.yaml
+
+[working-directory: 'config']
+config:
+    test -f melange.rsa || melange keygen
+    # Build config package
+    #
+    # Here we override some git variables that melange would
+    # otherwise autodiscover from our local .git directory
+    # and which might change without our actual config changing
+    #
+    # We do this because these values end up in the SPDX file
+    # embedded in the APK package and change any time HEAD's
+    # hash changes, even if the package contents stay the same,
+    # which breaks reproducibility
+    # 
+    # We override these to the values the upstream apko code
+    # defaults to using when run in a directory that isn't
+    # a git repo
+    melange build \
+    --signing-key melange.rsa \
+    --git-commit "unknown" \
+    --git-repo-url "https://unknown/unknown/unknown" \
+    --arch amd64 config-overlay.yaml
 
 image:
     #!/usr/bin/env bash
@@ -26,7 +50,7 @@ image:
     # image, but there's an undocumented `build-cpio` command in
     # apko that we can use to do this more robustly:
     # https://github.com/chainguard-dev/apko/pull/1177
-    apko build-cpio --lockfile apko.lock manifest.yaml ${build_tmp}/initramfs
+    apko build-cpio --lockfile apko.lock image.yaml ${build_tmp}/initramfs
     # Extract just the kernel from image so we can build it into UKI
     cpio -D ${build_tmp} -id "boot/vmlinuz-virt" < ${build_tmp}/initramfs
     cp -f ${build_tmp}/boot/vmlinuz-virt output/vmlinuz-virt

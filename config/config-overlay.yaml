@@ -1,0 +1,31 @@
+---
+package:
+  name: config-overlay
+  version: "1.0.0"
+  epoch: 0
+  description: Image config overlay package
+  copyright:
+    - license: MIT
+  dependencies:
+    runtime:
+    # Declare the packages that we conflict with (i.e. where we ship config
+    # files for packages that we want to use instead of the vendor defaults)
+    replaces:
+      - 'alpine-baselayout-data'  # /etc/inittab
+environment:
+  contents:
+    repositories:
+      - http://dl-cdn.alpinelinux.org/alpine/v3.23/main
+    packages:
+      - busybox
+  accounts:
+    groups:
+      - groupname: nonroot
+        gid: 10000
+    users:
+      - username: nonroot
+        uid: 10000
+pipeline:
+  - runs: |
+      # Copy our config files into the destination config package
+      cp -a vendor/. "${{targets.destdir}}"/

@@ -3,12 +3,18 @@ contents:
   repositories:
     - http://dl-cdn.alpinelinux.org/alpine/v3.23/main
     - http://dl-cdn.alpinelinux.org/alpine/v3.23/community
+  keyring:
+    - ./config/melange.rsa.pub  # import keyring for config overlay package
+  build_repositories:
+    - ./config/packages/        # import local repo for config overlay package
   packages:
     # This one metapackage provides busybox, apk, musl-utils, and OpenRC among others
     - alpine-base
     # Kernel and null firmware package
     - linux-firmware-none
     - linux-virt
+    # Image config overlay package
+    - config-overlay
     # Workload packages
     - nyancat
 # This is where we configure which services that OpenRC will

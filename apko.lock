@@ -1,17 +1,27 @@
 {
   "version": "v1",
   "config": {
-    "name": "manifest.yaml",
-    "checksum": "sha256-/o2Eoo4xn2Z7+R1g2xM46jrp/L6Xx3cRe1B5aoIVPhM="
+    "name": "image.yaml",
+    "checksum": "sha256-u+f1fhKRp8FYD5xLa8ouHTAzzJKuj7lW4D1WGcJaWNw="
   },
   "contents": {
     "keyring": [
+      {
+        "name": "./config/melange.rsa.pub",
+        "url": "./config/melange.rsa.pub"
+      },
       {
         "name": "alpinelinux.org/keys/alpine-devel%40lists.alpinelinux.org-6165ee59.rsa.pub",
         "url": "https://alpinelinux.org/keys/alpine-devel%40lists.alpinelinux.org-6165ee59.rsa.pub"
       }
     ],
-    "build_repositories": [],
+    "build_repositories": [
+      {
+        "name": "./config/packages/x86_64",
+        "url": "./config/packages/x86_64/APKINDEX.tar.gz",
+        "architecture": "x86_64"
+      }
+    ],
     "runtime_repositories": [],
     "repositories": [
       {
@@ -519,6 +529,25 @@
           "checksum": "sha256-sd2Izdi/Ca8lOdCzReZHEp2P1VySttgktuzFPv1TECg="
         },
         "checksum": "Q1kZVWVyo0ZySydq+Guaova5aevA8="
+      },
+      {
+        "name": "config-overlay",
+        "url": "./config/packages/x86_64/config-overlay-1.0.0-r0.apk",
+        "version": "1.0.0-r0",
+        "architecture": "x86_64",
+        "signature": {
+          "range": "bytes=0-652",
+          "checksum": "sha1-Gxe0I8g/ETvM2jL5NbkMj2CGoas="
+        },
+        "control": {
+          "range": "bytes=653-1483",
+          "checksum": "sha1-imv9LWsLpcmRYZkum8eY+OiuT/Q="
+        },
+        "data": {
+          "range": "bytes=1484-2920",
+          "checksum": "sha256-v5zqf0QPrCQ3KcJdy9ONkk/EDt8XwNB2/EyFRx8i23Y="
+        },
+        "checksum": "Q1imv9LWsLpcmRYZkum8eY+OiuT/Q="
       },
       {
         "name": "linux-firmware-none",
