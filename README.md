@@ -15,17 +15,22 @@ Enter Nix development shell:
 nix develop
 ```
 
+Build config overlay package using the contents of `/config`:
+```sh
+just config
+```
+
 Populate lockfile (`apko.lock`):
 ```sh
 just lock
 ```
 
-Build with lockfile as an input:
+Build image with lockfile as an input:
 ```sh
 just image
 ```
 
-Test in QEMU (full UEFI VM):
+Test in QEMU (full UEFI VM using UKI):
 ```sh
 just qemu
 ```
