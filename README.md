@@ -30,9 +30,14 @@ Build image with lockfile as an input:
 just image
 ```
 
-Test in QEMU (full UEFI VM using UKI):
+Test in QEMU (UEFI boot using UKI):
 ```sh
-just qemu
+just qemu-uki
+```
+
+Test in QEMU (raw UEFI+kernel+initramfs boot):
+```sh
+just qemu-uki
 ```
 
 Test in QEMU (microVM):
