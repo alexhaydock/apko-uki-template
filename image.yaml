@@ -16,7 +16,12 @@ contents:
     # Image config overlay package
     - config-overlay
     # Workload packages
+    - bash
     - nyancat
+    - openssh-server
+    - openssh-server-common-openrc
+    - swayimg
+    - waypipe
 # This is where we configure which services that OpenRC will
 # start, and which runlevels they will be started at
 paths:
@@ -88,21 +93,37 @@ paths:
     type: symlink
     source: /etc/init.d/crond
     permissions: 0o755
+  - path: /etc/runlevels/default/enforceperms
+    type: symlink
+    source: /etc/init.d/enforceperms
+    permissions: 0o755
   - path: /etc/runlevels/default/local
     type: symlink
     source: /etc/init.d/local
     permissions: 0o755
+  - path: /etc/runlevels/default/sshd
+    type: symlink
+    source: /etc/init.d/sshd
+    permissions: 0o755
 # This is where we configure accounts for services
 # that need to have accounts present, as apko does
 # not create them when installing packages
+#
+# The user account is the unprivileged account we
+# use for running user-based workloads
 accounts:
-  groups:  # copied from /etc/group
+  groups:
     - groupname: klogd
       gid: 500
-  users:  # copied from /etc/passwd
+    - groupname: user
+      gid: 1000
+  users:
     - username: klogd
       uid: 500
       shell: /sbin/nologin
+    - username: user
+      uid: 1000
+      shell: /bin/bash
 archs:
   - amd64
 ...

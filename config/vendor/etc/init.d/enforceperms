@@ -1,0 +1,15 @@
+#!/sbin/openrc-run
+# shellcheck shell=sh
+
+description="Enforcing permissions on first boot"
+
+start() {
+    ebegin "Enforcing permissions on first boot"
+
+    # Ensure /home/user is owned by `user`
+    chown -R user:user /home/user
+}
+
+stop() {
+    echo 'noop'
+}

@@ -1,9 +1,11 @@
 set ignore-comments
 
-build:
+# Run a full lock --> build --> boot pipeline
+go:
     just config
     just lock
     just image
+    just qemu-raw
 
 lock:
     # Create lockfile based on image config
@@ -65,7 +67,7 @@ image:
     --linux "output/vmlinuz-virt" \
     --initrd "output/${OUTPUT}_initramfs.zst"
 
-qemu:
+qemu-uki:
     #!/usr/bin/env bash
     set -euo pipefail
     # Calculate output filename based truncated hash of the lockfile
@@ -81,8 +83,33 @@ qemu:
     -machine q35,smm=on,vmport=off,accel=kvm \
     -drive if=pflash,format=raw,unit=0,file=${OVMF_FIRMWARE},readonly=on \
     -drive if=pflash,format=raw,unit=1,file=${OVMF_VARS_TMP} \
+    -device virtio-net-pci,netdev=nic \
+    -netdev user,hostname=apko,hostfwd=tcp::2223-:22,id=nic \
     -kernel output/${OUTPUT}_uki.efi
 
+qemu-raw:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    # Calculate output filename based truncated hash of the lockfile
+    OUTPUT="alpine_$(sha256sum apko.lock | cut -c1-7)"
+    # Copy vars to temp location
+    OVMF_VARS_TMP="$(mktemp)"
+    trap 'rm -f "${OVMF_VARS_TMP}"' EXIT
+    cp -fv "${OVMF_VARS}" "${OVMF_VARS_TMP}"
+    # Test in QEMU with UEFI firmware
+    qemu-system-x86_64 \
+    -name apkotest \
+    -m 1G \
+    -machine q35,smm=on,vmport=off,accel=kvm \
+    -drive if=pflash,format=raw,unit=0,file=${OVMF_FIRMWARE},readonly=on \
+    -drive if=pflash,format=raw,unit=1,file=${OVMF_VARS_TMP} \
+    -device virtio-net-pci,netdev=nic \
+    -netdev user,hostname=apko,hostfwd=tcp::2223-:22,id=nic \
+    -kernel output/vmlinuz-virt \
+    -initrd output/${OUTPUT}_initramfs.zst \
+    -append "rdinit=/sbin/init"
+
+# TODO: Fix networking
 microvm:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -93,6 +120,18 @@ microvm:
     -name apkotest \
     -m 1G \
     -machine microvm \
+    -netdev tap,id=tap0,script=no,downscript=no \
+    -device virtio-net-device,netdev=tap0 \
     -kernel output/vmlinuz-virt \
     -initrd output/${OUTPUT}_initramfs.zst \
-    -append "rdinit=/sbin/init console=ttyS0"
+    -append "rdinit=/sbin/init console=ttyS0" \
+    -nographic
+
+# Requires corresponding ~/.ssh/config entry
+ssh:
+    ssh apkotest
+
+# Requires corresponding ~/.ssh/config entry
+# TODO: Fix, as not yet working
+waypipe:
+    waypipe ssh apkotest swayimg

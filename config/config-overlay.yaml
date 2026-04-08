@@ -12,6 +12,7 @@ package:
     # files for packages that we want to use instead of the vendor defaults)
     replaces:
       - 'alpine-baselayout-data'  # /etc/inittab
+      - 'busybox'                 # /etc/udhcpc/udhcpc.conf
 environment:
   contents:
     repositories:
