@@ -57,8 +57,6 @@
           ];
 
           env = {
-            OVMF_VARS = "${pkgs.OVMF.variables}";
-            OVMF_FIRMWARE = "${pkgs.OVMF.firmware}";
           };
         };
       }

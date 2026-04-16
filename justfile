@@ -1,5 +1,7 @@
 set ignore-comments
 
+
+
 # Run a full lock --> build --> boot pipeline
 go:
     just config
@@ -75,13 +77,13 @@ qemu-uki:
     # Copy vars to temp location
     OVMF_VARS_TMP="$(mktemp)"
     trap 'rm -f "${OVMF_VARS_TMP}"' EXIT
-    cp -fv "${OVMF_VARS}" "${OVMF_VARS_TMP}"
+    cp -fv "/run/libvirt/nix-ovmf/edk2-i386-vars.fd" "${OVMF_VARS_TMP}"
     # Test in QEMU with UEFI firmware
     qemu-system-x86_64 \
     -name apkotest \
     -m 1G \
     -machine q35,smm=on,vmport=off,accel=kvm \
-    -drive if=pflash,format=raw,unit=0,file=${OVMF_FIRMWARE},readonly=on \
+    -drive if=pflash,format=raw,unit=0,file=/run/libvirt/nix-ovmf/edk2-x86_64-code.fd,readonly=on \
     -drive if=pflash,format=raw,unit=1,file=${OVMF_VARS_TMP} \
     -device virtio-net-pci,netdev=nic \
     -netdev user,hostname=apko,hostfwd=tcp::2223-:22,id=nic \
@@ -95,13 +97,13 @@ qemu-raw:
     # Copy vars to temp location
     OVMF_VARS_TMP="$(mktemp)"
     trap 'rm -f "${OVMF_VARS_TMP}"' EXIT
-    cp -fv "${OVMF_VARS}" "${OVMF_VARS_TMP}"
+    cp -fv "/run/libvirt/nix-ovmf/edk2-i386-vars.fd" "${OVMF_VARS_TMP}"
     # Test in QEMU with UEFI firmware
     qemu-system-x86_64 \
     -name apkotest \
     -m 1G \
     -machine q35,smm=on,vmport=off,accel=kvm \
-    -drive if=pflash,format=raw,unit=0,file=${OVMF_FIRMWARE},readonly=on \
+    -drive if=pflash,format=raw,unit=0,file=/run/libvirt/nix-ovmf/edk2-x86_64-code.fd,readonly=on \
     -drive if=pflash,format=raw,unit=1,file=${OVMF_VARS_TMP} \
     -device virtio-net-pci,netdev=nic \
     -netdev user,hostname=apko,hostfwd=tcp::2223-:22,id=nic \
