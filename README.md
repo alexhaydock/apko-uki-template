@@ -26,6 +26,11 @@ Build image with lockfile as an input:
 just image
 ```
 
+Generate EFI vars store populated with Secure Boot keys and example custom vars:
+```sh
+just efivars
+```
+
 Test in QEMU (UEFI boot using UKI):
 ```sh
 just qemu-uki

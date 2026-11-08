@@ -2,7 +2,7 @@
   "version": "v1",
   "config": {
     "name": "image.yaml",
-    "checksum": "sha256-9lcYmsZ7UKitJ3zW1cbEO1WRWMHdRa7F6Tp9VPM+z14="
+    "checksum": "sha256-+xUCgWkK3IOXrZB+53QVVtA67EFRoekmz3vaOH/jpNc="
   },
   "contents": {
     "keyring": [

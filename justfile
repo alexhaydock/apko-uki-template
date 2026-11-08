@@ -5,7 +5,8 @@ go:
     just config
     just lock
     just image
-    just qemu-raw
+    just efivars
+    just qemu-uki
 
 [working-directory: 'config']
 config:
@@ -46,6 +47,12 @@ image:
     'apk --no-cache add apko cpio systemd-ukify zstd && \
     sh /opt/imagebuild.sh'
 
+efivars:
+    podman run --rm -it -v "$(pwd):/opt" --workdir /opt registry.fedoraproject.org/fedora:45 \
+    sh -c \
+    'dnf install -y edk2-ovmf openssl python3-virt-firmware ukify uuidgen && \
+    sh /opt/efivars.sh'
+
 qemu-uki:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -54,14 +61,14 @@ qemu-uki:
     # Copy vars to temp location
     OVMF_VARS_TMP="$(mktemp)"
     trap 'rm -f "${OVMF_VARS_TMP}"' EXIT
-    cp -fv "/usr/share/edk2/ovmf/OVMF_VARS_4M.qcow2" "${OVMF_VARS_TMP}"
+    cp -fv "OVMF_VARS_CUSTOM.json" "${OVMF_VARS_TMP}"
     # Test in QEMU with UEFI firmware
     qemu-system-x86_64 \
     -name apkotest \
     -m 1G \
     -machine q35,smm=on,vmport=off,accel=kvm \
     -drive if=pflash,format=qcow2,unit=0,file=/usr/share/edk2/ovmf/OVMF_CODE_4M.qcow2,readonly=on \
-    -drive if=pflash,format=qcow2,unit=1,file=${OVMF_VARS_TMP} \
+    -device uefi-vars-x64,jsonfile=/tmp/OVMF_VARS_CUSTOM.json \
     -device virtio-net-pci,netdev=nic \
     -netdev user,hostname=apko,hostfwd=tcp::2223-:22,id=nic \
     -kernel output/${OUTPUT}_uki.efi
@@ -74,14 +81,14 @@ qemu-raw:
     # Copy vars to temp location
     OVMF_VARS_TMP="$(mktemp)"
     trap 'rm -f "${OVMF_VARS_TMP}"' EXIT
-    cp -fv "/usr/share/edk2/ovmf/OVMF_VARS_4M.qcow2" "${OVMF_VARS_TMP}"
+    cp -fv "OVMF_VARS_CUSTOM.json" "${OVMF_VARS_TMP}"
     # Test in QEMU with UEFI firmware
     qemu-system-x86_64 \
     -name apkotest \
     -m 1G \
     -machine q35,smm=on,vmport=off,accel=kvm \
     -drive if=pflash,format=qcow2,unit=0,file=/usr/share/edk2/ovmf/OVMF_CODE_4M.qcow2,readonly=on \
-    -drive if=pflash,format=qcow2,unit=1,file=${OVMF_VARS_TMP} \
+    -device uefi-vars-x64,jsonfile=/tmp/OVMF_VARS_CUSTOM.json \
     -device virtio-net-pci,netdev=nic \
     -netdev user,hostname=apko,hostfwd=tcp::2223-:22,id=nic \
     -kernel output/vmlinuz-virt \
