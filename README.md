@@ -7,13 +7,9 @@ Has a sample workload (see image) and just enough scaffolding to actually work, 
 ![QEMU window showing the Nyancat binary running](image.png)
 
 ## Usage
+This project is mostly for my own testing so is built to assume a Fedora host with `podman` and `qemu` installed.
 
-This project is built with the assumption that Nix is available. I've tested it only on NixOS but Nix installed on other distributions may also work.
-
-Enter Nix development shell:
-```sh
-nix develop
-```
+Other distributions will work with only minor tweaks needed to ensure the right paths are used in the `justfile` for the various `qemu`-related paths.
 
 Build config overlay package using the contents of `/config`:
 ```sh

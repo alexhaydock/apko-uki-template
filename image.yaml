@@ -1,8 +1,8 @@
 ---
 contents:
   repositories:
-    - http://dl-cdn.alpinelinux.org/alpine/v3.23/main
-    - http://dl-cdn.alpinelinux.org/alpine/v3.23/community
+    - http://dl-cdn.alpinelinux.org/alpine/v3.24/main
+    - http://dl-cdn.alpinelinux.org/alpine/v3.24/community
   keyring:
     - ./config/melange.rsa.pub  # import keyring for config overlay package
   build_repositories:
@@ -20,90 +20,88 @@ contents:
     - nyancat
     - openssh-server
     - openssh-server-common-openrc
-    - swayimg
-    - waypipe
 # This is where we configure which services that OpenRC will
 # start, and which runlevels they will be started at
 paths:
   # Services: sysinit
   - path: /etc/runlevels/sysinit/devfs
     type: symlink
-    source: /etc/init.d/devfs
+    source: ../../init.d/devfs
     permissions: 0o755  # extremely important otherwise apko clobbers the permissions of the dest file
   - path: /etc/runlevels/sysinit/dmesg
     type: symlink
-    source: /etc/init.d/dmesg
+    source: ../../init.d/dmesg
     permissions: 0o755
   - path: /etc/runlevels/sysinit/mdev
     type: symlink
-    source: /etc/init.d/mdev
+    source: ../../init.d/mdev
     permissions: 0o755
   - path: /etc/runlevels/sysinit/hwdrivers
     type: symlink
-    source: /etc/init.d/hwdrivers
+    source: ../../init.d/hwdrivers
     permissions: 0o755
   # Services: boot
   - path: /etc/runlevels/boot/bootmisc
     type: symlink
-    source: /etc/init.d/bootmisc
+    source: ../../init.d/bootmisc
     permissions: 0o755
   - path: /etc/runlevels/boot/hostname
     type: symlink
-    source: /etc/init.d/hostname
+    source: ../../init.d/hostname
     permissions: 0o755
   - path: /etc/runlevels/boot/hwclock
     type: symlink
-    source: /etc/init.d/hwclock
+    source: ../../init.d/hwclock
     permissions: 0o755
   - path: /etc/runlevels/boot/klogd
     type: symlink
-    source: /etc/init.d/klogd
+    source: ../../init.d/klogd
     permissions: 0o755
   - path: /etc/runlevels/boot/modules
     type: symlink
-    source: /etc/init.d/modules
+    source: ../../init.d/modules
     permissions: 0o755
   - path: /etc/runlevels/boot/networking
     type: symlink
-    source: /etc/init.d/networking
+    source: ../../init.d/networking
     permissions: 0o755
   - path: /etc/runlevels/boot/sysctl
     type: symlink
-    source: /etc/init.d/sysctl
+    source: ../../init.d/sysctl
     permissions: 0o755
   - path: /etc/runlevels/boot/syslog
     type: symlink
-    source: /etc/init.d/syslog
+    source: ../../init.d/syslog
     permissions: 0o755
   # Services: shutdown
   - path: /etc/runlevels/shutdown/killprocs
     type: symlink
-    source: /etc/init.d/killprocs
+    source: ../../init.d/killprocs
     permissions: 0o755
   - path: /etc/runlevels/shutdown/mount-ro
     type: symlink
-    source: /etc/init.d/mount-ro
+    source: ../../init.d/mount-ro
     permissions: 0o755
   # Services: default
   - path: /etc/runlevels/default/acpid
     type: symlink
-    source: /etc/init.d/acpid
+    source: ../../init.d/acpid
     permissions: 0o755
   - path: /etc/runlevels/default/crond
     type: symlink
-    source: /etc/init.d/crond
+    source: ../../init.d/crond
     permissions: 0o755
   - path: /etc/runlevels/default/enforceperms
     type: symlink
-    source: /etc/init.d/enforceperms
+    source: ../../init.d/enforceperms
     permissions: 0o755
   - path: /etc/runlevels/default/local
     type: symlink
-    source: /etc/init.d/local
+    source: ../../init.d/local
     permissions: 0o755
   - path: /etc/runlevels/default/sshd
     type: symlink
-    source: /etc/init.d/sshd
+    source: ../../init.d/sshd
     permissions: 0o755
 # This is where we configure accounts for services
 # that need to have accounts present, as apko does
