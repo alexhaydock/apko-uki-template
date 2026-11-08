@@ -21,14 +21,19 @@ Populate lockfile (`apko.lock`):
 just lock
 ```
 
-Build image with lockfile as an input:
-```sh
-just image
-```
-
 Generate EFI vars store populated with Secure Boot keys and example custom vars:
 ```sh
 just efivars
+```
+
+Build image with lockfile as an input:
+```sh
+just initramfs
+```
+
+Build `initramfs` into UKI and sign it:
+```sh
+just uki
 ```
 
 Test in QEMU (UEFI boot using UKI):

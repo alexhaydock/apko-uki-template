@@ -4,8 +4,9 @@ set ignore-comments
 go:
     just config
     just lock
-    just image
     just efivars
+    just initramfs
+    just uki
     just qemu-uki
 
 [working-directory: 'config']
@@ -41,14 +42,20 @@ lock:
     'apk --no-cache add apko && \
     apko lock --output apko.lock image.yaml'
 
-image:
+initramfs:
     podman run --privileged --rm -it -v "$(pwd):/opt" --workdir /opt cgr.dev/chainguard/wolfi-base \
     sh -c \
     'apk --no-cache add apko cpio systemd-ukify zstd && \
     sh /opt/imagebuild.sh'
 
+uki:
+    podman run --privileged --rm -it -v "$(pwd):/opt" --workdir /opt docker.io/library/alpine \
+    sh -c \
+    'apk --no-cache add apko sbsigntool ukify && \
+    sh /opt/ukibuild.sh'
+
 efivars:
-    podman run --rm -it -v "$(pwd):/opt" --workdir /opt registry.fedoraproject.org/fedora:45 \
+    podman run --rm -it -v "$(pwd):/opt" --workdir /opt registry.fedoraproject.org/fedora \
     sh -c \
     'dnf install -y edk2-ovmf openssl python3-virt-firmware ukify uuidgen && \
     sh /opt/efivars.sh'
@@ -67,7 +74,7 @@ qemu-uki:
     -name apkotest \
     -m 1G \
     -machine q35,smm=on,vmport=off,accel=kvm \
-    -drive if=pflash,format=qcow2,unit=0,file=/usr/share/edk2/ovmf/OVMF_CODE_4M.qcow2,readonly=on \
+    -drive if=pflash,format=raw,unit=0,file=/usr/share/edk2/ovmf/OVMF.qemuvars.fd,readonly=on \
     -device uefi-vars-x64,jsonfile=/tmp/OVMF_VARS_CUSTOM.json \
     -device virtio-net-pci,netdev=nic \
     -netdev user,hostname=apko,hostfwd=tcp::2223-:22,id=nic \
@@ -87,7 +94,7 @@ qemu-raw:
     -name apkotest \
     -m 1G \
     -machine q35,smm=on,vmport=off,accel=kvm \
-    -drive if=pflash,format=qcow2,unit=0,file=/usr/share/edk2/ovmf/OVMF_CODE_4M.qcow2,readonly=on \
+    -drive if=pflash,format=raw,unit=0,file=/usr/share/edk2/ovmf/OVMF.qemuvars.fd,readonly=on \
     -device uefi-vars-x64,jsonfile=/tmp/OVMF_VARS_CUSTOM.json \
     -device virtio-net-pci,netdev=nic \
     -netdev user,hostname=apko,hostfwd=tcp::2223-:22,id=nic \
@@ -112,7 +119,3 @@ microvm:
     -initrd output/${OUTPUT}_initramfs.zst \
     -append "rdinit=/sbin/init console=ttyS0" \
     -nographic
-
-# Requires corresponding ~/.ssh/config entry
-ssh:
-    ssh apkotest

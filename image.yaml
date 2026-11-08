@@ -15,6 +15,8 @@ contents:
     - linux-virt
     # Image config overlay package
     - config-overlay
+    # Secure Boot / SEV-SNP support
+    - mokutil
     # Workload packages
     - bash
     - nyancat

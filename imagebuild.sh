@@ -31,10 +31,3 @@ cp -f ${build_tmp}/boot/vmlinuz-virt output/vmlinuz-virt
 # (Without doing this we seemingly can't boot the UKI in QEMU using
 # the -kernel argument)
 zstd -f -19 "${build_tmp}/initramfs" -o "output/${OUTPUT}_initramfs.zst"
-
-# Build initramfs and kernel into UKI
-ukify build \
---output "output/${OUTPUT}_uki.efi" \
---cmdline "rdinit=/sbin/init" \
---linux "output/vmlinuz-virt" \
---initrd "output/${OUTPUT}_initramfs.zst"
