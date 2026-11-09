@@ -2,7 +2,7 @@
   "version": "v1",
   "config": {
     "name": "image.yaml",
-    "checksum": "sha256-+xUCgWkK3IOXrZB+53QVVtA67EFRoekmz3vaOH/jpNc="
+    "checksum": "sha256-ygbt8oSLzxYR+1dRYODFn25AaPHNiNUmmgVjshdiKSA="
   },
   "contents": {
     "keyring": [
@@ -34,6 +34,11 @@
       {
         "name": "dl-cdn.alpinelinux.org/alpine/v3.24/community/x86_64",
         "url": "http://dl-cdn.alpinelinux.org/alpine/v3.24/community/x86_64/APKINDEX.tar.gz",
+        "architecture": "x86_64"
+      },
+      {
+        "name": "dl-cdn.alpinelinux.org/alpine/edge/testing/x86_64",
+        "url": "http://dl-cdn.alpinelinux.org/alpine/edge/testing/x86_64/APKINDEX.tar.gz",
         "architecture": "x86_64"
       }
     ],
@@ -614,18 +619,18 @@
         "version": "1.0.0-r0",
         "architecture": "x86_64",
         "signature": {
-          "range": "bytes=0-684",
-          "checksum": "sha1-EUvBM3QO3GbfUkw5fKgF7VAdZQA="
+          "range": "bytes=0-686",
+          "checksum": "sha1-2a+cRcYFBHMhVnZfVLD1RpRXb0A="
         },
         "control": {
-          "range": "bytes=685-1500",
-          "checksum": "sha1-FLGM3Y6X+x8Si/Po4dNIg/J5uV0="
+          "range": "bytes=687-1512",
+          "checksum": "sha1-wrVlcPQmGlje7+QpkCL5/tHfPNc="
         },
         "data": {
-          "range": "bytes=1501-3822",
-          "checksum": "sha256-RgO828oao3j4aXQr+iX7x2DMQ6KDydSWBLwGSOdrjas="
+          "range": "bytes=1513-4392",
+          "checksum": "sha256-o8ff8kWhLnW1StIoLPxb+3rjFigD3I85RP6p9zKci9s="
         },
-        "checksum": "Q1FLGM3Y6X+x8Si/Po4dNIg/J5uV0="
+        "checksum": "Q1wrVlcPQmGlje7+QpkCL5/tHfPNc="
       },
       {
         "name": "linux-firmware-none",
@@ -892,6 +897,82 @@
           "checksum": "sha256-OmIwyXkqCQocb3k4svfnEzgbaWhlPtHmFgTiTliyhIw="
         },
         "checksum": "Q16jNP6BM3qd7bdV0O4PL2fKlUUuU="
+      },
+      {
+        "name": "lolcat",
+        "url": "http://dl-cdn.alpinelinux.org/alpine/edge/testing/x86_64/lolcat-1.4-r0.apk",
+        "version": "1.4-r0",
+        "architecture": "x86_64",
+        "signature": {
+          "range": "bytes=0-667",
+          "checksum": "sha1-DYwTPsK63RNRtlC1BKNuR7xHzPE="
+        },
+        "control": {
+          "range": "bytes=668-1253",
+          "checksum": "sha1-EeUW9CUD5ILqcczr6sSCr3WtGWM="
+        },
+        "data": {
+          "range": "bytes=1254-9067",
+          "checksum": "sha256-fNudry5VAV7KeX5pc3Dj4ErsiLze/C6XjgWjl1oC17A="
+        },
+        "checksum": "Q1EeUW9CUD5ILqcczr6sSCr3WtGWM="
+      },
+      {
+        "name": "efivar-libs",
+        "url": "http://dl-cdn.alpinelinux.org/alpine/v3.24/main/x86_64/efivar-libs-39-r1.apk",
+        "version": "39-r1",
+        "architecture": "x86_64",
+        "signature": {
+          "range": "bytes=0-723",
+          "checksum": "sha1-nXMPAAg1r4XTnNCcN5mOPnVln/M="
+        },
+        "control": {
+          "range": "bytes=724-1318",
+          "checksum": "sha1-sEbo32DjTWiE1GQ479VmY2jmRGs="
+        },
+        "data": {
+          "range": "bytes=1319-112014",
+          "checksum": "sha256-0JoPDr+8/HuHsF7UkdniHIvQ6GMD209V9GcSVxTgMIg="
+        },
+        "checksum": "Q1sEbo32DjTWiE1GQ479VmY2jmRGs="
+      },
+      {
+        "name": "keyutils-libs",
+        "url": "http://dl-cdn.alpinelinux.org/alpine/v3.24/main/x86_64/keyutils-libs-1.6.3-r4.apk",
+        "version": "1.6.3-r4",
+        "architecture": "x86_64",
+        "signature": {
+          "range": "bytes=0-722",
+          "checksum": "sha1-0NANVR+JQ/Sf/sRBFRax02JRS2E="
+        },
+        "control": {
+          "range": "bytes=723-1288",
+          "checksum": "sha1-tzMclvB3/DUi7kNhpEHRCXIEzZA="
+        },
+        "data": {
+          "range": "bytes=1289-7634",
+          "checksum": "sha256-NWKsATH6IPczaeFH2pXLKUFd1wKxUjpf+RHSDpW4KmU="
+        },
+        "checksum": "Q1tzMclvB3/DUi7kNhpEHRCXIEzZA="
+      },
+      {
+        "name": "mokutil",
+        "url": "http://dl-cdn.alpinelinux.org/alpine/v3.24/community/x86_64/mokutil-0.7.2-r0.apk",
+        "version": "0.7.2-r0",
+        "architecture": "x86_64",
+        "signature": {
+          "range": "bytes=0-721",
+          "checksum": "sha1-CJOr0RWw+r+qASsO9toe9Ez4Efc="
+        },
+        "control": {
+          "range": "bytes=722-1341",
+          "checksum": "sha1-HqBRylwMoXi8cWsgJjGc7Ro7wJA="
+        },
+        "data": {
+          "range": "bytes=1342-23194",
+          "checksum": "sha256-L+EaX2p2NP+j/owqHVUg0F8/jpgnZ1uPKS6KacoHiFY="
+        },
+        "checksum": "Q1HqBRylwMoXi8cWsgJjGc7Ro7wJA="
       },
       {
         "name": "nyancat",

@@ -1,0 +1,2 @@
+# Mount EFI vars filesystem so we can read from it
+efivarfs /sys/firmware/efi/efivars efivarfs defaults 0 0

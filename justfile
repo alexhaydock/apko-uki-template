@@ -57,7 +57,7 @@ uki:
 efivars:
     podman run --rm -it -v "$(pwd):/opt" --workdir /opt registry.fedoraproject.org/fedora \
     sh -c \
-    'dnf install -y edk2-ovmf openssl python3-virt-firmware ukify uuidgen && \
+    'dnf install -y edk2-ovmf jq openssl python3-virt-firmware ukify uuidgen && \
     sh /opt/efivars.sh'
 
 qemu-uki:
@@ -75,7 +75,7 @@ qemu-uki:
     -m 1G \
     -machine q35,smm=on,vmport=off,accel=kvm \
     -drive if=pflash,format=raw,unit=0,file=/usr/share/edk2/ovmf/OVMF.qemuvars.fd,readonly=on \
-    -device uefi-vars-x64,jsonfile=/tmp/OVMF_VARS_CUSTOM.json \
+    -device uefi-vars-x64,jsonfile="${OVMF_VARS_TMP}" \
     -device virtio-net-pci,netdev=nic \
     -netdev user,hostname=apko,hostfwd=tcp::2223-:22,id=nic \
     -kernel output/${OUTPUT}_uki.efi
@@ -95,7 +95,7 @@ qemu-raw:
     -m 1G \
     -machine q35,smm=on,vmport=off,accel=kvm \
     -drive if=pflash,format=raw,unit=0,file=/usr/share/edk2/ovmf/OVMF.qemuvars.fd,readonly=on \
-    -device uefi-vars-x64,jsonfile=/tmp/OVMF_VARS_CUSTOM.json \
+    -device uefi-vars-x64,jsonfile="${OVMF_VARS_TMP}" \
     -device virtio-net-pci,netdev=nic \
     -netdev user,hostname=apko,hostfwd=tcp::2223-:22,id=nic \
     -kernel output/vmlinuz-virt \

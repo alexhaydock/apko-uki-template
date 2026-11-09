@@ -3,6 +3,7 @@ contents:
   repositories:
     - http://dl-cdn.alpinelinux.org/alpine/v3.24/main
     - http://dl-cdn.alpinelinux.org/alpine/v3.24/community
+    - http://dl-cdn.alpinelinux.org/alpine/edge/testing  # Needed solely for the `lolcat` package lol
   keyring:
     - ./config/melange.rsa.pub  # import keyring for config overlay package
   build_repositories:
@@ -19,6 +20,7 @@ contents:
     - mokutil
     # Workload packages
     - bash
+    - lolcat
     - nyancat
     - openssh-server
     - openssh-server-common-openrc
