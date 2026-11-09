@@ -11,7 +11,6 @@ package:
     # Declare the packages that we conflict with (i.e. where we ship config
     # files for packages that we want to use instead of the vendor defaults)
     replaces:
-      - 'alpine-baselayout'       # /etc/motd
       - 'alpine-baselayout-data'  # /etc/inittab
       - 'busybox'                 # /etc/udhcpc/udhcpc.conf
 environment:

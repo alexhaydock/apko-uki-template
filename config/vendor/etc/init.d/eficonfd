@@ -1,0 +1,31 @@
+#!/sbin/openrc-run
+# shellcheck shell=sh
+
+description="Daemon to read config from EFI vars and write it to disk"
+
+start() {
+    ebegin "Reading EFI vars and writing config"
+
+    export EFIVAR="ASCIIFun-00000000-1111-2222-3333-444444444444"
+
+    echo "Welcome to apko-uki-test!" | tee /etc/motd
+    echo "" | tee -a /etc/motd
+    echo "Printing value injected from EFI var ${EFIVAR}" | tee -a /etc/motd
+    test -f "/sys/firmware/efi/efivars/${EFIVAR}" || echo "EFI var injection does not seem to be working :(" | tee -a /etc/motd
+    cat "/sys/firmware/efi/efivars/${EFIVAR}" | tee -a /etc/motd
+    echo "" | tee -a /etc/motd
+    echo "" | tee -a /etc/motd
+
+    mokutil --sb-state | tee -a /etc/motd
+    echo "" | tee -a /etc/motd
+}
+
+stop() {
+    echo 'noop'
+}
+
+# Run after localmount so our efivarfs is ready. We need
+# to schedule this as part of the boot runlevel.
+depend() {
+        after localmount
+}

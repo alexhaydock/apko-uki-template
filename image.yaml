@@ -77,6 +77,10 @@ paths:
     type: symlink
     source: ../../init.d/syslog
     permissions: 0o755
+  - path: /etc/runlevels/boot/eficonfd
+    type: symlink
+    source: ../../init.d/eficonfd
+    permissions: 0o755
   # Services: shutdown
   - path: /etc/runlevels/shutdown/killprocs
     type: symlink
