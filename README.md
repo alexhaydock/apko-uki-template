@@ -11,6 +11,13 @@ This project is mostly for my own testing so is built to assume a Fedora host wi
 
 Other distributions will work with only minor tweaks needed to ensure the right paths are used in the `justfile` for the various `qemu`-related paths.
 
+### Run all build steps
+Runs all of the individual steps as documented below, but automatically and in order:
+```sh
+just go
+```
+
+### Run individual steps
 Build config overlay package using the contents of `/config`:
 ```sh
 just config
@@ -38,15 +45,5 @@ just uki
 
 Test in QEMU (UEFI boot using UKI):
 ```sh
-just qemu-uki
-```
-
-Test in QEMU (raw UEFI+kernel+initramfs boot):
-```sh
-just qemu-uki
-```
-
-Test in QEMU (microVM):
-```sh
-just microvm
+just qemu
 ```

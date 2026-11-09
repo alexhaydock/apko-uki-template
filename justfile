@@ -7,7 +7,7 @@ go:
     just efivars
     just initramfs
     just uki
-    just qemu-uki
+    just qemu
 
 [working-directory: 'config']
 config:
@@ -57,10 +57,10 @@ uki:
 efivars:
     podman run --rm -it -v "$(pwd):/opt" --workdir /opt registry.fedoraproject.org/fedora \
     sh -c \
-    'dnf install -y edk2-ovmf jq openssl python3-virt-firmware ukify uuidgen && \
+    'dnf install -y edk2-ovmf jq openssl python3-virt-firmware ukify uuidgen xxd && \
     sh /opt/efivars.sh'
 
-qemu-uki:
+qemu:
     #!/usr/bin/env bash
     set -euo pipefail
     # Calculate output filename based truncated hash of the lockfile
@@ -79,43 +79,3 @@ qemu-uki:
     -device virtio-net-pci,netdev=nic \
     -netdev user,hostname=apko,hostfwd=tcp::2223-:22,id=nic \
     -kernel output/${OUTPUT}_uki.efi
-
-qemu-raw:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    # Calculate output filename based truncated hash of the lockfile
-    OUTPUT="alpine_$(sha256sum apko.lock | cut -c1-7)"
-    # Copy vars to temp location
-    OVMF_VARS_TMP="$(mktemp)"
-    trap 'rm -f "${OVMF_VARS_TMP}"' EXIT
-    cp -fv "OVMF_VARS_CUSTOM.json" "${OVMF_VARS_TMP}"
-    # Test in QEMU with UEFI firmware
-    qemu-system-x86_64 \
-    -name apkotest \
-    -m 1G \
-    -machine q35,smm=on,vmport=off,accel=kvm \
-    -drive if=pflash,format=raw,unit=0,file=/usr/share/edk2/ovmf/OVMF.qemuvars.fd,readonly=on \
-    -device uefi-vars-x64,jsonfile="${OVMF_VARS_TMP}" \
-    -device virtio-net-pci,netdev=nic \
-    -netdev user,hostname=apko,hostfwd=tcp::2223-:22,id=nic \
-    -kernel output/vmlinuz-virt \
-    -initrd output/${OUTPUT}_initramfs.zst \
-    -append "rdinit=/sbin/init"
-
-# TODO: Fix networking
-microvm:
-    #!/usr/bin/env bash
-    set -euo pipefail
-    # Calculate output filename based truncated hash of the lockfile
-    OUTPUT="alpine_$(sha256sum apko.lock | cut -c1-7)"
-    # Test in QEMU as microVM
-    qemu-system-x86_64 \
-    -name apkotest \
-    -m 1G \
-    -machine microvm \
-    -netdev tap,id=tap0,script=no,downscript=no \
-    -device virtio-net-device,netdev=tap0 \
-    -kernel output/vmlinuz-virt \
-    -initrd output/${OUTPUT}_initramfs.zst \
-    -append "rdinit=/sbin/init console=ttyS0" \
-    -nographic

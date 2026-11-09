@@ -5,19 +5,23 @@ description="Daemon to read config from EFI vars and write it to disk"
 
 start() {
     ebegin "Reading EFI vars and writing config"
+    
+    # Note: We use `strings` here rather than cp/cat/dd to limit
+    #       the injection of anything other than basic ASCII text
+    #       and prevent the EFI var injection process from becoming
+    #       an attack surface in itself.
 
-    export EFIVAR="ASCIIFun-00000000-1111-2222-3333-444444444444"
+    export MOTDVAR="motd-00000000-1111-2222-3333-444444444444"
+    export HOSTVAR="host-00000000-1111-2222-3333-555555555555"
 
-    echo "Welcome to apko-uki-test!" | tee /etc/motd
-    echo "" | tee -a /etc/motd
-    echo "Printing value injected from EFI var ${EFIVAR}" | tee -a /etc/motd
-    test -f "/sys/firmware/efi/efivars/${EFIVAR}" || echo "EFI var injection does not seem to be working :(" | tee -a /etc/motd
-    cat "/sys/firmware/efi/efivars/${EFIVAR}" | tee -a /etc/motd
-    echo "" | tee -a /etc/motd
-    echo "" | tee -a /etc/motd
+    # Write motd based on 
+    echo -e "Welcome to apko-uki-test!\n\nPrinting value injected from EFI var ${MOTDVAR}:" > /etc/motd
+    test -f "/sys/firmware/efi/efivars/${MOTDVAR}" || echo "EFI var injection does not seem to be working :(" >> /etc/motd
+    strings "/sys/firmware/efi/efivars/${MOTDVAR}" >> /etc/motd
+    echo "" >> /etc/motd
 
-    mokutil --sb-state | tee -a /etc/motd
-    echo "" | tee -a /etc/motd
+    # Set hostname
+    strings "/sys/firmware/efi/efivars/${HOSTVAR}" > /etc/hostname
 }
 
 stop() {
@@ -26,7 +30,12 @@ stop() {
 
 # Run after localmount so our efivarfs is ready. We need
 # to schedule this as part of the boot runlevel.
+#
+# Run before hostname and networking services so we can
+# set the hostname and configure networking using injected
+# vars
 depend() {
         after localmount
+        before hostname
         before networking
 }
