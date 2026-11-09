@@ -28,4 +28,5 @@ stop() {
 # to schedule this as part of the boot runlevel.
 depend() {
         after localmount
+        before networking
 }
