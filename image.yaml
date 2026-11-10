@@ -128,6 +128,4 @@ accounts:
     - username: user
       uid: 1000
       shell: /bin/bash
-archs:
-  - amd64
 ...
