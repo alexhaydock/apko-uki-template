@@ -33,7 +33,7 @@ stop() {
 #
 # Run before hostname and networking services so we can
 # set the hostname and configure networking using injected
-# vars
+# vars.
 depend() {
         after localmount
         before hostname

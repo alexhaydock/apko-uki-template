@@ -79,6 +79,10 @@ paths:
     type: symlink
     source: ../../init.d/eficonfd
     permissions: 0o755
+  - path: /etc/runlevels/boot/efioverlayd
+    type: symlink
+    source: ../../init.d/efioverlayd
+    permissions: 0o755
   # Services: shutdown
   - path: /etc/runlevels/shutdown/killprocs
     type: symlink

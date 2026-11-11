@@ -2,7 +2,7 @@
   "version": "v1",
   "config": {
     "name": "image.yaml",
-    "checksum": "sha256-hurYx0wcEX2FvPsTDvpTsJQ5AzJDF5Ebb9jyXzcrA9w="
+    "checksum": "sha256-aPlb8fY3NeOvbK65GMgrhcmzgpfDb2DPSsi4MAxseGQ="
   },
   "contents": {
     "keyring": [
@@ -614,18 +614,18 @@
         "version": "1.0.0-r0",
         "architecture": "x86_64",
         "signature": {
-          "range": "bytes=0-689",
-          "checksum": "sha1-a9jhA0rkKxFKQk0tVtDSu3OLCsU="
+          "range": "bytes=0-685",
+          "checksum": "sha1-m34RYQnbvCEVfyKedgIFIU6cpHU="
         },
         "control": {
-          "range": "bytes=690-1506",
-          "checksum": "sha1-/++xRqwzbmKdZ55D3dBDUgF5SQY="
+          "range": "bytes=686-1501",
+          "checksum": "sha1-o8eUwSkPPM9LfSFcLX9iWHedjVc="
         },
         "data": {
-          "range": "bytes=1507-4700",
-          "checksum": "sha256-aR2Py/F77Qe2eNjL0zCGYvtjFthIT2NEoH/Cr2HHSCM="
+          "range": "bytes=1502-5290",
+          "checksum": "sha256-6Q5j50U1MkmOhMKWqTO8oPh+Zw1pI3oC79s0nyX5+S4="
         },
-        "checksum": "Q1/++xRqwzbmKdZ55D3dBDUgF5SQY="
+        "checksum": "Q1o8eUwSkPPM9LfSFcLX9iWHedjVc="
       },
       {
         "name": "linux-firmware-none",
@@ -876,22 +876,22 @@
       },
       {
         "name": "linux-virt",
-        "url": "http://dl-cdn.alpinelinux.org/alpine/v3.24/main/x86_64/linux-virt-6.18.62-r0.apk",
-        "version": "6.18.62-r0",
+        "url": "http://dl-cdn.alpinelinux.org/alpine/v3.24/main/x86_64/linux-virt-6.18.63-r0.apk",
+        "version": "6.18.63-r0",
         "architecture": "x86_64",
         "signature": {
           "range": "bytes=0-722",
-          "checksum": "sha1-Co9n+5Uy4pd1/5PWkUl/ESL6Kvk="
+          "checksum": "sha1-VlLKECedEqMokKNNgrgt1BB1rNE="
         },
         "control": {
-          "range": "bytes=723-1237",
-          "checksum": "sha1-6jNP6BM3qd7bdV0O4PL2fKlUUuU="
+          "range": "bytes=723-1238",
+          "checksum": "sha1-kM+Zd24DF6gRHhonIh6W6jqUHlc="
         },
         "data": {
-          "range": "bytes=1238-44573298",
-          "checksum": "sha256-OmIwyXkqCQocb3k4svfnEzgbaWhlPtHmFgTiTliyhIw="
+          "range": "bytes=1239-44585822",
+          "checksum": "sha256-thH0WJvpmP/4uu12DTk8YSL4b2XvFepJ3d2GheB/yZI="
         },
-        "checksum": "Q16jNP6BM3qd7bdV0O4PL2fKlUUuU="
+        "checksum": "Q1kM+Zd24DF6gRHhonIh6W6jqUHlc="
       },
       {
         "name": "efivar-libs",

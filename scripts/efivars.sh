@@ -41,3 +41,11 @@ export EFIHOSTNAME="injectedhostname"
 jq --arg data "$(echo ${EFIHOSTNAME} | xxd -p -c 1000000 | tr -d '\n')" \
   '.variables += [{"name": "host", "guid": "00000000-1111-2222-3333-555555555555", "attr": 7, "data": $data}]' \
   OVMF_VARS_CUSTOM.json > OVMF_VARS_CUSTOM.json.tmp && mv OVMF_VARS_CUSTOM.json.tmp OVMF_VARS_CUSTOM.json
+
+# tar-gzip a directory tree and inject it as an EFI var
+OVERLAY_TAR="$(mktemp /tmp/overlay.XXXXXX.tar.gz)"  
+trap 'rm -f "$OVERLAY_TAR"' EXIT  
+tar -czf "$OVERLAY_TAR" -C overlay .  
+jq --arg data "$(xxd -p -c 1000000 "$OVERLAY_TAR" | tr -d '\n')" \
+  '.variables += [{"name": "overlay", "guid": "00000000-1111-1111-1111-111111111111", "attr": 7, "data": $data}]' \
+  OVMF_VARS_CUSTOM.json > OVMF_VARS_CUSTOM.json.tmp && mv OVMF_VARS_CUSTOM.json.tmp OVMF_VARS_CUSTOM.json

@@ -1,0 +1,39 @@
+#!/sbin/openrc-run
+# shellcheck shell=sh
+
+description="A bad idea of a daemon that takes a tar-gzipped filesystem tree and overlays it over the OS"
+
+start() {
+    ebegin "Reading EFI var and writing config"
+
+    export OVERLAYVAR="overlay-00000000-1111-1111-1111-111111111111"
+
+    test -f "/sys/firmware/efi/efivars/${OVERLAYVAR}" || echo 'No overlay found :('
+
+    # Unpack overlay over the top of the filesystem
+    # (First 4 bytes of an efivars file are the attribute flags; skip them)
+    tail -c +5 "/sys/firmware/efi/efivars/${OVERLAYVAR}" | tar -xzf - -C /
+    eend $?
+}
+
+stop() {
+    echo 'noop'
+}
+
+# Run after localmount so our efivarfs is ready. We need
+# to schedule this as part of the boot runlevel.
+#
+# Run before hostname and networking services so we can
+# set the hostname and configure networking using injected
+# vars.
+#
+# For this example we also run after eficonfd as we want to
+# specifically test to ensure that this overlay service is
+# capable of replacing files which already exist in the base
+# image.
+depend() {
+        after eficonfd
+        after localmount
+        before hostname
+        before networking
+}
