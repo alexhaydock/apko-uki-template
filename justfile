@@ -8,7 +8,7 @@ go:
     just qemu
 
 snpguest:
-    sh scripts/snpguest.sh
+    /usr/bin/env bash scripts/snpguest.sh
 
 config:
     podman run --privileged --rm -it -v "$(pwd):/opt" --workdir /opt cgr.dev/chainguard/wolfi-base \
@@ -35,4 +35,4 @@ efivars:
     sh /opt/scripts/efivars.sh'
 
 qemu:
-    sh scripts/qemu.sh
+    /usr/bin/env bash scripts/qemu.sh
