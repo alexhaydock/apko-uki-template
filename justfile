@@ -2,24 +2,19 @@ set ignore-comments
 
 go:
     just config
-    just lock
-    just efivars
     just initramfs
     just uki
+    just efivars
     just qemu
+
+snpguest:
+    sh scripts/snpguest.sh
 
 config:
     podman run --privileged --rm -it -v "$(pwd):/opt" --workdir /opt cgr.dev/chainguard/wolfi-base \
     sh -c \
     'apk --no-cache add melange && \
     sh /opt/scripts/config.sh'
-
-lock:
-    # Create lockfile based on image config
-    podman run --privileged --rm -it -v "$(pwd):/opt" --workdir /opt cgr.dev/chainguard/wolfi-base \
-    sh -c \
-    'apk --no-cache add apko && \
-    sh /opt/scripts/lock.sh'
 
 initramfs:
     podman run --privileged --rm -it -v "$(pwd):/opt" --workdir /opt cgr.dev/chainguard/wolfi-base \

@@ -37,7 +37,7 @@ jq --arg data "$(xxd -p -c 1000000 motd | tr -d '\n')" \
   OVMF_VARS_CUSTOM.json > OVMF_VARS_CUSTOM.json.tmp && mv OVMF_VARS_CUSTOM.json.tmp OVMF_VARS_CUSTOM.json
 
 # Inject the VM's hostname using EFI vars also
-export EFIHOSTNAME="injectedhostname"
+EFIHOSTNAME="injectedhostname"
 jq --arg data "$(echo ${EFIHOSTNAME} | xxd -p -c 1000000 | tr -d '\n')" \
   '.variables += [{"name": "host", "guid": "00000000-1111-2222-3333-555555555555", "attr": 7, "data": $data}]' \
   OVMF_VARS_CUSTOM.json > OVMF_VARS_CUSTOM.json.tmp && mv OVMF_VARS_CUSTOM.json.tmp OVMF_VARS_CUSTOM.json

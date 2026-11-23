@@ -28,5 +28,4 @@ melange build \
     --git-repo-url "https://unknown/unknown/unknown" \
     --arch amd64 \
     config-overlay.yaml
-
 )

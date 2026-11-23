@@ -1,0 +1,8 @@
+FROM docker.io/library/alpine:latest as build
+RUN apk --no-cache add build-base git perl pkgconf openssl-dev rust cargo
+RUN git clone https://github.com/virtee/snpguest.git /opt/snpguest
+WORKDIR /opt/snpguest
+RUN cargo build --release
+
+FROM scratch
+COPY --from=build /opt/snpguest/target/release/snpguest /snpguest

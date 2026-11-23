@@ -8,6 +8,9 @@ start() {
 
     # Ensure /home/user is owned by `user`
     chown -R user:user /home/user
+
+    # Ensure snpguest is executable
+    chmod +x /usr/bin/snpguest
 }
 
 stop() {

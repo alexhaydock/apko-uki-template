@@ -1,6 +1,6 @@
 # apko-uki-template
 
-Simple bootable Alpine Linux UKI composed with my `apko` fork that supports lockfiles.
+Simple bootable Alpine Linux UKI composed with my `apko`. Built to support running as a guest with SEV-SNP enabled.
 
 Has a sample workload (see image) and just enough scaffolding to actually work, but nothing else.
 
@@ -23,16 +23,6 @@ Build config overlay package using the contents of `/config`:
 just config
 ```
 
-Populate lockfile (`apko.lock`):
-```sh
-just lock
-```
-
-Generate EFI vars store populated with Secure Boot keys and example custom vars:
-```sh
-just efivars
-```
-
 Build image with lockfile as an input:
 ```sh
 just initramfs
@@ -41,6 +31,11 @@ just initramfs
 Build `initramfs` into UKI and sign it:
 ```sh
 just uki
+```
+
+Generate EFI vars store populated with runtime config:
+```sh
+just efivars
 ```
 
 Test in QEMU (UEFI boot using UKI):
